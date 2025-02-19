@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <raylib.h>
+int main(void) {
+    const int screenWidth = 800;
+    const int screenHeight = 450;
+    InitWindow(screenWidth, screenHeight, "Pomodoro");
+
+    SetExitKey(KEY_NULL);
+
+    bool exitWindowRequested = false;
+    bool exitWindow = false;
+    SetTargetFPS(60);
+    Rectangle buttonYes = {100,150,200,100};
+    Rectangle buttonNo = {500, 150, 200, 100};
+
+
+ //   int btnState = 0;
+//    bool btnAction = false;
+    Vector2 mousePoint = {0.0f, 0.0f};
+
+    while (!exitWindow){
+        mousePoint = GetMousePosition();
+        //btnAction = false;
+        // Detects if window closed button has been pressed
+        if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) exitWindowRequested = true;
+
+        if (exitWindowRequested) {
+            if (CheckCollisionPointRec(mousePoint,buttonYes)){
+                if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) exitWindow = true;
+            }
+            if (CheckCollisionPointRec(mousePoint,buttonNo)){
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) exitWindowRequested = false;
+            }
+            if (IsKeyPressed(KEY_Y)) exitWindow = true;
+            else if (IsKeyPressed(KEY_N)) exitWindowRequested = false;
+        }
+
+
+        BeginDrawing();
+            ClearBackground(RAYWHITE);
+            if (exitWindowRequested){
+                DrawRectangle(0,100, screenWidth, 200, GRAY);
+                DrawText("Are you sure you want to exit Pomodoro? [Y/N]", 40, 100, 30, WHITE);
+                DrawRectangleRec(buttonYes, RED);
+                DrawRectangleLinesEx(buttonYes, 5, BLACK);
+                DrawRectangleRec(buttonNo, GREEN);
+                DrawRectangleLinesEx(buttonNo, 5, BLACK);
+
+            } else {
+                DrawText("Pomodoro Session Started", 190,200,20, LIGHTGRAY);
+            }
+        EndDrawing();
+    }
+
+    CloseWindow();
+    return 0;
+}
