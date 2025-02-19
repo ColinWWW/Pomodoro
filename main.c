@@ -20,17 +20,21 @@ int main(void) {
  //   int btnState = 0;
 //    bool btnAction = false;
     Vector2 mousePoint = {0.0f, 0.0f};
-    int minutes = 1;
+    int frames = 60;
+    int minutes = 25 * frames;
     int seconds = 60;
     int count = minutes * seconds;
+
     while (!exitWindow){
         mousePoint = GetMousePosition();
         if (CheckCollisionPointRec(mousePoint, buttonStart)) {
-            minutes = 20;
             if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && count != 0) pomodoroStart = true;
         }
-        while (pomodoroStart) {
+        if (pomodoroStart && count > 0) {
             count -= 1;
+        } else if (count == 0) {
+            pomodoroStart = false;
+            count = minutes * seconds;
         }
         // Detects if window closed button has been pressed
         if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) exitWindowRequested = true;
@@ -61,13 +65,14 @@ int main(void) {
                 DrawText("NO", buttonNo.x + buttonNo.width/2 - 20, 180, 30, BLACK);
 
             } else if (pomodoroStart){
-               DrawText(TextFormat("Remaining Time: %d", count), 10, 30 ,20, BLACK);
+               DrawText(TextFormat("Remaining Time: %02d:%02d", (count/60)/60, count/60 ), 250, 200,30, BLACK);
 
             } else {
                DrawRectangleRec(buttonStart, GRAY);
                DrawRectangleLinesEx(buttonStart, 5, BLACK);
+               DrawText("Start Pomodoro", screenWidth/2 - screenWidth/5 + 60, screenHeight/2 - 75, 23, GREEN);
              }
-            }
+
 
         EndDrawing();
     }
