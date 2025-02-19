@@ -65,7 +65,7 @@ int main(void) {
                 DrawText("NO", buttonNo.x + buttonNo.width/2 - 20, 180, 30, BLACK);
 
             } else if (pomodoroStart){
-               DrawText(TextFormat("Remaining Time: %02d:%02d", (count/60)/60, count/60 ), 250, 200,30, BLACK);
+               DrawText(TextFormat("Remaining Time: %02d:%02d", (count/60)/60,count/60 % 60), 250, 200,30, BLACK);
 
             } else {
                DrawRectangleRec(buttonStart, GRAY);
